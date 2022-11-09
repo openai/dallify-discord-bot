@@ -12,8 +12,8 @@
     "dall-e",
     "dalle"
   ],
-  "author": "yufei",
-  "license": "ISC",
+  "author": "openAI",
+  "license": "MIT",
   "dependencies": {
     "@types/node": "^18.11.9",
     "@types/sharp": "^0.31.0",
