@@ -2,18 +2,21 @@ Example code for running a Discord Bot that uses OpenAI's DALL-E api to generate
 
 This bot uses OpenAI's NodeJS SDK, and v14 of discord.js, and is written in Typescript.
 
-This repo is not acceptiong Pull Requests. Please fork this repo if you want to add or change features.
+This repo is not accepting Pull Requests. Please fork this repo if you want to add or change features.
 
 # Features include:
+
 - draw command to generate images (1 to 9) using the generations endpoint
 - save button to send images to user's DMs
 - reroll button to rerun that generation
 - expand button to zoom out of the image by using the edits (inpaint) endpoint
 
 # Discord Bot setup:
+
 https://discordjs.guide/preparations/setting-up-a-bot-application.html
 
 Your bot needs the following bot permissions:
+
 - Send Messages
 - Use Slash Commands
 - Attach Files
@@ -21,6 +24,7 @@ Your bot needs the following bot permissions:
 Use the invite link in `src/Bot.ts`, which includes the above permissions.
 
 # Secrets setup:
+
 1. Go to `src/utils/constants.ts` and follow the comments to create `src/utils/config.json`
 2. Copy your bot's client id and token into `config.json`
 3. Copy your server's id into `config.json` (https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
