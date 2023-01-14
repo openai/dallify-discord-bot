@@ -30,8 +30,7 @@ export default (client: Client): void => {
 };
 
 function checkPermissions(interaction: BaseInteraction): string | null {
-  const guild = interaction.guild;
-  if (!guild) {
+  if (!interaction.inGuild()) {
     // no DM's, change if needed
     if (LOG_ERRORS) {
       console.log("Permissions error: No guild.");
