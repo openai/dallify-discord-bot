@@ -6,7 +6,7 @@ export const DISCORD_BOT_CLIENT_ID =
 
 export const OPENAI_API_KEY =
   process.env.OPENAI_API_KEY ?? config.OPENAI_API_KEY;
-export const ALLOWED_SERVER_IDS: string[] = config.ALLOWED_SERVER_IDS ?? []; // only servers with these ids can use the bot
+export const ALLOWED_SERVER_IDS: string[] = process.env.ALLOWED_SERVER_IDS ? process.env.ALLOWED_SERVER_IDS.split(",") : config.ALLOWED_SERVER_IDS ?? []; // only servers with these ids can use the bot
 
 /* To set these constants without hardcoding, create a json file at:
 src/utils/config.json
