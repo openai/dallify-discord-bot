@@ -1,18 +1,9 @@
 {
-  "name": "dallify-ts",
-  "version": "1.0.0",
-  "description": "A discord bot for talking to OpenAI's DALL-E image API",
   "main": "src/Bot.ts",
   "scripts": {
     "start": "ts-node src/Bot.ts"
   },
-  "keywords": [
-    "bot",
-    "openai",
-    "dall-e",
-    "dalle"
-  ],
-  "author": "openAI",
+  "author": "OpenAI",
   "license": "MIT",
   "dependencies": {
     "@types/node": "^18.11.9",
