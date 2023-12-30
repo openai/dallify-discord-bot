@@ -37,6 +37,14 @@ export const EXPAND_ACTION_PADDING = 120; // How many pixels the Expand action a
 export const EXPAND_ACTION_NUM_IMAGES = 2; // how many images to show for an expand action
 export const LOG_ERRORS = true;
 
+// The style of the generated images. Must be one of vivid or natural. Vivid causes the model to lean towards generating hyper-real and dramatic images.
+// Natural causes the model to produce more natural, less hyper-real looking images.
+export type Style = "vivid" | "natural" | undefined | null;
+export const DEFAULT_STYLE: Style = "vivid";
+export type Quality = "standard" | "hd";
+export const DEFAULT_QUALITY: Quality = "standard"; // The quality of the image that will be generated. hd creates images with finer details and greater consistency across the image.
+
+
 if (DEFAULT_IMAGES > MAX_IMAGES) {
   throw `DEFAULT_IMAGES must not be greater than MAX_IMAGES`;
 }

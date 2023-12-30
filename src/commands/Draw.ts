@@ -5,7 +5,7 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 import { Command } from "../Command";
-import { MAX_IMAGES, DEFAULT_IMAGES } from "../utils/constants";
+import {MAX_IMAGES, DEFAULT_IMAGES, DEFAULT_STYLE, DEFAULT_QUALITY, Style, Quality} from "../utils/constants";
 import { createResponse, processOpenAIError } from "../utils/discord";
 import {
   imagesFromBase64Response, configuration,
@@ -70,6 +70,8 @@ export const Draw: Command = {
     const uuid = interaction.user.id;
     const prompt = interaction.options.getString("prompt");
     const count = interaction.options.getInteger("n") ?? DEFAULT_IMAGES;
+    const style = (interaction.options.getString("style") ?? DEFAULT_STYLE) as Style;
+    const quality = (interaction.options.getString("quality") ?? DEFAULT_QUALITY) as Quality;
 
     if (prompt == null) {
       await interaction.reply("Prompt must exist.");
@@ -87,6 +89,8 @@ export const Draw: Command = {
             size: OPENAI_API_SIZE_ARG,
             response_format: "b64_json",
             model: "dall-e-3",
+            quality: quality,
+            style: style
           }).then(completion => imagesFromBase64Response(completion.data))
       );
 
