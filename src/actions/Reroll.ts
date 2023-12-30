@@ -1,9 +1,8 @@
 import { Client, ButtonInteraction } from "discord.js";
 import { Action, CustomIdContext } from "../Action";
 import {
-  OPENAI_API_SIZE_ARG,
   imagesFromBase64Response,
-  openai,
+  configuration, OPENAI_API_SIZE_ARG,
 } from "../utils/openai";
 import { createResponse, processOpenAIError } from "../utils/discord";
 import { defaultActions } from "../Actions";
@@ -40,7 +39,7 @@ export const Reroll: Action = {
       .catch(console.error);
 
     try {
-      const completion = await openai.createImage({
+      const completion = await configuration.images.generate({
         prompt: prompt,
         n: count,
         size: OPENAI_API_SIZE_ARG,
