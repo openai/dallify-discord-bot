@@ -79,7 +79,6 @@ export async function createTiledComposite(
       top: Math.floor(i / finalCompositeSize) * IMAGE_SIZE,
     });
   });
-  console.log("test11")
   return await sharp({
     create: {
       width: IMAGE_SIZE * finalCompositeSize,

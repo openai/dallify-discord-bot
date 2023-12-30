@@ -20,7 +20,8 @@ import axios from "axios";
 export async function createResponse(
   prompt: string,
   imageBuffers: Buffer[],
-  buttonActions: Action[]
+  buttonActions: Action[],
+  context: CustomIdContext
 ): Promise<BaseMessageOptions> {
   const logo = await createLogo();
   const composite = await createTiledComposite(imageBuffers);
@@ -40,7 +41,7 @@ export async function createResponse(
       iconURL: "attachment://logo.png",
     });
 
-  const row = rowFromActions(buttonActions, { count: imageBuffers.length });
+  const row = rowFromActions(buttonActions, context);
   if (row) {
     return { embeds: [embed], files: files, components: [row] };
   } else {

@@ -12,6 +12,7 @@ import {
   OPENAI_API_SIZE_ARG,
 } from "../utils/openai";
 import { defaultActions } from "../Actions";
+import {CustomIdContext} from "../Action";
 
 export const Draw: Command = {
   name: "draw",
@@ -98,10 +99,17 @@ export const Draw: Command = {
       const imageArrays = await Promise.all(imagePromises);
       const images = imageArrays.flat();
 
+      const context: CustomIdContext = {
+        count: count,
+        quality: quality,
+        style: style
+      }
+
       const response = await createResponse(
         prompt,
         images,
-        defaultActions(count)
+        defaultActions(count),
+        context
       );
       interaction
         .followUp({ ...response, content: `<@${uuid}>` })
