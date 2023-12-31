@@ -119,7 +119,9 @@ export function processOpenAIError(
 
 export async function fetchImagesFromComposite(
   compositeImageData: EmbedImageData | null,
-  count: number
+  count: number,
+  imageWidth: number,
+  imageHeight: number
 ): Promise<Buffer[] | null> {
   if (!compositeImageData || count == 0) {
     return null;
@@ -139,7 +141,9 @@ export async function fetchImagesFromComposite(
       compositeBuffer,
       width,
       height,
-      count
+      count,
+      imageWidth,
+      imageHeight
     );
     return images;
   } catch (e) {
