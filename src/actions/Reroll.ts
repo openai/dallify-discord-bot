@@ -2,11 +2,11 @@ import { Client, ButtonInteraction } from "discord.js";
 import { Action, CustomIdContext } from "../Action";
 import {
   imagesFromBase64Response,
-  configuration, OPENAI_API_SIZE_ARG,
+  configuration
 } from "../utils/openai";
 import { createResponse, processOpenAIError } from "../utils/discord";
 import { defaultActions } from "../Actions";
-import {Quality, Style} from "../utils/constants";
+import {Quality, Size, Style} from "../utils/constants";
 
 export const Reroll: Action = {
   displayText: "🎲 Reroll",
@@ -14,7 +14,7 @@ export const Reroll: Action = {
     return customId.startsWith("reroll:");
   },
   customId: (context: CustomIdContext) => {
-    return `reroll:${context.count},${context.quality},${context.style}`;
+    return `reroll:${context.count},${context.quality},${context.style},${context.width},${context.height}`;
   },
   run: async (client: Client, interaction: ButtonInteraction) => {
     if (interaction.message.embeds.length == 0) {
@@ -28,8 +28,8 @@ export const Reroll: Action = {
     // Remove reroll: from the customId and split on commas
     const matchParams = customId.replace("reroll:", "").split(",");
 
-    // Assert that we have the count[0], quality[1], and style[2]
-    if (matchParams.length != 3) {
+    // Assert that we have the count[0], quality[1], and style[2] and width[3] and height[4]
+    if (matchParams.length != 5) {
       return;
     }
 
@@ -43,6 +43,9 @@ export const Reroll: Action = {
     const uuid = interaction.user.id;
     const quality = matchParams[1] as Quality;
     const style = matchParams[2] as Style;
+    const width = parseInt(matchParams[3]);
+    const height = parseInt(matchParams[4]);
+    const size = `${width}x${height}` as Size;
 
 
     await interaction
@@ -54,7 +57,7 @@ export const Reroll: Action = {
           configuration.images.generate({
             prompt: prompt,
             n: 1, // Generate only one image per call (dall-e-3 restriction)
-            size: OPENAI_API_SIZE_ARG,
+            size: size,
             response_format: "b64_json",
             model: "dall-e-3",
             quality: quality,
@@ -69,7 +72,9 @@ export const Reroll: Action = {
       const context: CustomIdContext = {
         count: count,
         quality: quality,
-        style: style
+        style: style,
+        width: width,
+        height: height
       }
       const response = await createResponse(
         prompt,

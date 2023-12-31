@@ -24,7 +24,7 @@ export async function createResponse(
   context: CustomIdContext
 ): Promise<BaseMessageOptions> {
   const logo = await createLogo();
-  const composite = await createTiledComposite(imageBuffers);
+  const composite = await createTiledComposite(imageBuffers, context.width, context.height);
   const files = [
     new AttachmentBuilder(logo, { name: "logo.png" }),
     new AttachmentBuilder(composite, { name: "DALL-E.png" }),

@@ -6,6 +6,8 @@ export interface CustomIdContext {
   count: number; // number of images in the generation
   quality: Quality; // quality of generation (standard/hd)
   style: Style; // style of generation (vivid/natural)
+  width: number;
+  height: number;
 }
 export interface Action {
   displayText: string;

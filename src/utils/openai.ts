@@ -1,4 +1,4 @@
-import { IMAGE_SIZE, OPENAI_API_KEY } from "./constants";
+import { OPENAI_API_KEY, OPENAI_ORGANIZATION} from "./constants";
 import OpenAI from "openai";
 import {Image, ImagesResponse} from "openai/resources";
 
@@ -26,23 +26,22 @@ export { Buffer } from "buffer";
 type OpenAIApiSize = "1024x1024" | "1024x1792" | "1792x1024" | "256x256" | "512x512";
 
 // Size enum used for requests
-function sizeEnum(): OpenAIApiSize {
-  if (IMAGE_SIZE == 1024) {
+export function sizeEnum(size_identifier: number): OpenAIApiSize {
+  if (size_identifier == 1024) {
     return "1024x1024";
   }
-  if (IMAGE_SIZE == 1792) {
-    return "1024x1792";
-  }
-  if (IMAGE_SIZE == -1792) {
+  if (size_identifier == 1792) {
     return "1792x1024";
+  }
+  if (size_identifier == -1792) {
+    return "1024x1792";
   }
   throw "Invalid IMAGE_SIZE";
 }
 
-export const OPENAI_API_SIZE_ARG: OpenAIApiSize = sizeEnum();
-
 export const configuration = new OpenAI({
   apiKey: OPENAI_API_KEY,
+  organization: OPENAI_ORGANIZATION,
 });
 
 export function imagesFromBase64Response(response: Image[]): Buffer[] {

@@ -5,11 +5,18 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 import { Command } from "../Command";
-import {MAX_IMAGES, DEFAULT_IMAGES, DEFAULT_STYLE, DEFAULT_QUALITY, Style, Quality} from "../utils/constants";
+import {
+    MAX_IMAGES,
+    DEFAULT_IMAGES,
+    DEFAULT_STYLE,
+    DEFAULT_QUALITY,
+    Style,
+    Quality,
+    Size
+} from "../utils/constants";
 import { createResponse, processOpenAIError } from "../utils/discord";
 import {
-  imagesFromBase64Response, configuration,
-  OPENAI_API_SIZE_ARG,
+    imagesFromBase64Response, configuration,
 } from "../utils/openai";
 import { defaultActions } from "../Actions";
 import {CustomIdContext} from "../Action";
@@ -65,7 +72,27 @@ export const Draw: Command = {
               }
           ]
 
-    }
+    },
+      {
+            type: ApplicationCommandOptionType.String,
+            name: "size",
+            description: "The size of the images. (1024x1024/1792x1024/1024x1792)",
+            required: false,
+            choices: [
+                {
+                    name: "1024x1024",
+                    value: "1024x1024",
+                },
+                {
+                    name: "1792x1024",
+                    value: "1792x1024",
+                },
+                {
+                    name: "1024x1792",
+                    value: "1024x1792",
+                }
+            ]
+      }
   ],
   run: async (client: Client, interaction: ChatInputCommandInteraction) => {
     const uuid = interaction.user.id;
@@ -73,6 +100,9 @@ export const Draw: Command = {
     const count = interaction.options.getInteger("n") ?? DEFAULT_IMAGES;
     const style = (interaction.options.getString("style") ?? DEFAULT_STYLE) as Style;
     const quality = (interaction.options.getString("quality") ?? DEFAULT_QUALITY) as Quality;
+    const size = (interaction.options.getString("size") ?? "1024x1024") as Size;
+    const width = parseInt(size.split("x")[0]);
+    const height = parseInt(size.split("x")[1]);
 
     if (prompt == null) {
       await interaction.reply("Prompt must exist.");
@@ -87,7 +117,7 @@ export const Draw: Command = {
           configuration.images.generate({
             prompt: prompt,
             n: 1, // Generate only one image per call (dall-e-3 restriction)
-            size: OPENAI_API_SIZE_ARG,
+            size: size,
             response_format: "b64_json",
             model: "dall-e-3",
             quality: quality,
@@ -102,7 +132,9 @@ export const Draw: Command = {
       const context: CustomIdContext = {
         count: count,
         quality: quality,
-        style: style
+        style: style,
+        width: width,
+        height: height
       }
 
       const response = await createResponse(
