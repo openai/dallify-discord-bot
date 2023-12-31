@@ -25,20 +25,6 @@ export { Buffer } from "buffer";
 
 type OpenAIApiSize = "1024x1024" | "1024x1792" | "1792x1024" | "256x256" | "512x512";
 
-// Size enum used for requests
-export function sizeEnum(size_identifier: number): OpenAIApiSize {
-  if (size_identifier == 1024) {
-    return "1024x1024";
-  }
-  if (size_identifier == 1792) {
-    return "1792x1024";
-  }
-  if (size_identifier == -1792) {
-    return "1024x1792";
-  }
-  throw "Invalid IMAGE_SIZE";
-}
-
 export const configuration = new OpenAI({
   apiKey: OPENAI_API_KEY,
   organization: OPENAI_ORGANIZATION,
