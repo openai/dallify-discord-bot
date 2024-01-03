@@ -1,10 +1,6 @@
-import { IMAGE_SIZE, OPENAI_API_KEY } from "./constants";
-import {
-  CreateImageRequestSizeEnum,
-  Configuration,
-  OpenAIApi,
-  ImagesResponse,
-} from "openai";
+import { OPENAI_API_KEY, OPENAI_ORGANIZATION} from "./constants";
+import OpenAI from "openai";
+import {Image, ImagesResponse} from "openai/resources";
 
 // Allow Buffer to be used for arguments that require File.
 declare module "buffer" {
@@ -27,31 +23,14 @@ Buffer.prototype.toPngImageBuffer = function () {
 
 export { Buffer } from "buffer";
 
-// Size enum used for requests
-function sizeEnum(): CreateImageRequestSizeEnum {
-  if (IMAGE_SIZE == 256) {
-    return CreateImageRequestSizeEnum._256x256;
-  }
-  if (IMAGE_SIZE == 512) {
-    return CreateImageRequestSizeEnum._512x512;
-  }
-  if (IMAGE_SIZE == 1024) {
-    return CreateImageRequestSizeEnum._1024x1024;
-  }
-  throw "Invalid IMAGE_SIZE";
-}
+type OpenAIApiSize = "1024x1024" | "1024x1792" | "1792x1024" | "256x256" | "512x512";
 
-export const OPENAI_API_SIZE_ARG = sizeEnum();
-
-const configuration = new Configuration({
+export const configuration = new OpenAI({
   apiKey: OPENAI_API_KEY,
+  organization: OPENAI_ORGANIZATION,
 });
 
-// Use this to make calls to our API
-export const openai = new OpenAIApi(configuration);
-
-export function imagesFromBase64Response(response: ImagesResponse): Buffer[] {
-  const data = response.data;
-  const resultData: string[] = data.map((d) => d.b64_json) as string[];
+export function imagesFromBase64Response(response: Image[]): Buffer[] {
+  const resultData: string[] = response.map((d) => d.b64_json) as string[];
   return resultData.map((j) => Buffer.from(j, "base64"));
 }

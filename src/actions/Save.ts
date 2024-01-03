@@ -26,7 +26,7 @@ export const Save: Action = {
     return customId.startsWith("save:");
   },
   customId: (context: CustomIdContext) => {
-    return `save:${context.count}`;
+      return `save:${context.count},${context.quality},${context.style},${context.width},${context.height}`;
   },
   run: async (client: Client, interaction: ButtonInteraction) => {
     if (interaction.message.embeds.length == 0) {
@@ -37,11 +37,15 @@ export const Save: Action = {
     if (!matchResults || matchResults.length != 2) {
       return;
     }
-    const count = parseInt(matchResults[1]);
+    const matchParams = customId.replace("save:", "").split(",");
+
+    const count = parseInt(matchParams[0]);
     const embed = interaction.message.embeds[0];
     const prompt = embed.description ?? "";
+    const width = parseInt(matchParams[3]);
+    const height = parseInt(matchParams[4]);
 
-    const images = await fetchImagesFromComposite(embed.image, count).catch(
+    const images = await fetchImagesFromComposite(embed.image, count, width, height).catch(
       console.error
     );
     if (images == null) {

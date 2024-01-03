@@ -20,10 +20,11 @@ import axios from "axios";
 export async function createResponse(
   prompt: string,
   imageBuffers: Buffer[],
-  buttonActions: Action[]
+  buttonActions: Action[],
+  context: CustomIdContext
 ): Promise<BaseMessageOptions> {
   const logo = await createLogo();
-  const composite = await createTiledComposite(imageBuffers);
+  const composite = await createTiledComposite(imageBuffers, context.width, context.height);
   const files = [
     new AttachmentBuilder(logo, { name: "logo.png" }),
     new AttachmentBuilder(composite, { name: "DALL-E.png" }),
@@ -40,7 +41,7 @@ export async function createResponse(
       iconURL: "attachment://logo.png",
     });
 
-  const row = rowFromActions(buttonActions, { count: imageBuffers.length });
+  const row = rowFromActions(buttonActions, context);
   if (row) {
     return { embeds: [embed], files: files, components: [row] };
   } else {
@@ -118,7 +119,9 @@ export function processOpenAIError(
 
 export async function fetchImagesFromComposite(
   compositeImageData: EmbedImageData | null,
-  count: number
+  count: number,
+  imageWidth: number,
+  imageHeight: number
 ): Promise<Buffer[] | null> {
   if (!compositeImageData || count == 0) {
     return null;
@@ -138,7 +141,9 @@ export async function fetchImagesFromComposite(
       compositeBuffer,
       width,
       height,
-      count
+      count,
+      imageWidth,
+      imageHeight
     );
     return images;
   } catch (e) {

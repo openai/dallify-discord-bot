@@ -6,6 +6,8 @@ export default (client: Client): void => {
     if (!client.user || !client.application) {
       return;
     }
+
+    // Global command registration, takes up to an hour to register.
     await client.application.commands.set(Commands);
 
     console.log(`${client.user.username} is online`);

@@ -6,5 +6,5 @@ import { Expand } from "./actions/Expand";
 export const Actions: Action[] = [Save, Reroll, Expand];
 
 export function defaultActions(count: number) {
-  return [Reroll, Save, Expand];
+  return [Reroll, Save];
 }

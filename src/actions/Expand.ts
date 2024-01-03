@@ -155,7 +155,7 @@ async function performExpandAction(
   const finalImage = expandedImage.toPngImageBuffer();
 
   try {
-    const completion = await openai.createImageEdit(
+    const completion = await openai.images.edit(
       finalImage,
       finalImage,
       prompt,
